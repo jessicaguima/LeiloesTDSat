@@ -3,6 +3,8 @@ import java.sql.DriverManager;
 
 public class conectaDAO {
     /* Método para conectar */
+    /* Variáveis */
+    Connection conn; //Conexão
     
     public Connection getConexao(){                
         try {        
@@ -17,5 +19,5 @@ public class conectaDAO {
             System.out.println("Erro ao conectar: " + e.getMessage());
             return null;
         }            
-    }
+    }    
 }
