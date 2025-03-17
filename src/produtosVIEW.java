@@ -1,8 +1,31 @@
+
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
 public class produtosVIEW extends javax.swing.JFrame {
 
-    public produtosVIEW() {
+        public produtosVIEW() {
         initComponents();
-        ;
+        preencherTabela();
+    }
+    private void preencherTabela(){
+        ProdutosDAO produtosDAO = new ProdutosDAO();
+        List<ProdutosDTO> listaProdutos = produtosDAO.listaProdutosVendidos();
+        
+        DefaultTableModel tabelaProdutos = (DefaultTableModel) TblProdutosVendidos.getModel();
+        TblProdutosVendidos.setRowSorter(new TableRowSorter (tabelaProdutos));
+        tabelaProdutos.setNumRows(0);
+        
+        for(ProdutosDTO p : listaProdutos){
+            Object[] obg = new Object[] {
+                p.getId(),
+                p.getNome(),
+                p.getValor(),
+                p.getStatus()
+            };
+            tabelaProdutos.addRow(obg);
+        }
     }
     
 
