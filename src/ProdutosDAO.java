@@ -1,7 +1,7 @@
 import java.sql.PreparedStatement;
 import java.sql.Connection;
-import javax.swing.JOptionPane;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +53,22 @@ public class ProdutosDAO {
         }catch (Exception e){
             return null;
         }
+    }
+    
+    /* Atualizar o status do produto para vendido */
+    public boolean venderProdutos(int idProduto){
+        String sql = "UPDATE produtos SET status = 'Vendido' WHERE id = ?;";
+        try {
+            PreparedStatement stmt = this.conn.prepareStatement(sql);
+            stmt.setInt(1, idProduto);
+            int rowsUpdate = stmt.executeUpdate();
+            return rowsUpdate > 0;
+            
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+      }
+        
     }
      
 }
