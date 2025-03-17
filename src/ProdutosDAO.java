@@ -1,7 +1,7 @@
 import java.sql.PreparedStatement;
 import java.sql.Connection;
-import javax.swing.JOptionPane;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +54,44 @@ public class ProdutosDAO {
             return null;
         }
     }
-     
+    
+    /* Atualizar o status do produto para vendido */
+    public boolean venderProdutos(int idProduto){
+        String sql = "UPDATE produtos SET status = 'Vendido' WHERE id = ?;";
+        try {
+            PreparedStatement stmt = this.conn.prepareStatement(sql);
+            stmt.setInt(1, idProduto);
+            int rowsUpdate = stmt.executeUpdate();
+            return rowsUpdate > 0;
+            
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+      }
+        
+    }
+    
+    /* Busca de Produtos Vendidos */
+    public List<ProdutosDTO> listaProdutosVendidos(){
+        String sql = "SELECT id, nome, valor, status FROM produtos WHERE status = 'Vendido'";
+        try {
+            PreparedStatement stmt = this.conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            List<ProdutosDTO> lista = new ArrayList<>();
+            
+            while(rs.next()){
+                ProdutosDTO produtosdto = new ProdutosDTO();
+                produtosdto.setId(rs.getInt("id"));
+                produtosdto.setNome(rs.getString("nome"));
+                produtosdto.setValor(rs.getInt("valor"));
+                produtosdto.setStatus(rs.getString("status"));
+                
+                lista.add(produtosdto);
+            }
+            return lista;
+        }catch (Exception e) {
+            return null;
+        }
+    }
 }
 
